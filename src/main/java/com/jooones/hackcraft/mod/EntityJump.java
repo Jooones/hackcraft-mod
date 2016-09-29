@@ -7,7 +7,7 @@ public class EntityJump {
 
     @SubscribeEvent
     public void handleEntityJump(LivingEvent.LivingJumpEvent livingJumpEvent) {
-        livingJumpEvent.getEntity().motionY *= 2;
+        livingJumpEvent.getEntity().motionY *= 1;
     }
 
 }
