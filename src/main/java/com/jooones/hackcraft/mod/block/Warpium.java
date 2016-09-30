@@ -9,15 +9,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Warpium extends Block {
 
+    public static final String NAME = "warpium";
+
     @Initialize
     public static void init() {
         GameRegistry.register(new Warpium());
-        GameRegistry.register(new ItemBlock(new Warpium()).setRegistryName(new Warpium().getRegistryName()));
     }
 
     public Warpium() {
         super(Material.WOOD);
-        this.setRegistryName("warpium");
+        this.setRegistryName(NAME);
+        this.setUnlocalizedName("warpium");
         this.setCreativeTab(CreativeTabs.MATERIALS);
     }
 
