@@ -3,22 +3,26 @@ package com.jooones.hackcraft.mod;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import com.jooones.hackcraft.mod.annotation.Initialize;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-@Mod(modid = "Hackcraft", version = "0.1")
+@Mod(modid = "hackcraft", version = "0.1")
 public class Main {
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
-        MinecraftForge.EVENT_BUS.register(new EntityJump());
+    public void preInit(FMLPreInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
         initialize();
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
+
     }
 
     private void initialize() throws IOException, InvocationTargetException, IllegalAccessException {

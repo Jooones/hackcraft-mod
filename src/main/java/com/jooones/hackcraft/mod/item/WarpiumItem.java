@@ -14,9 +14,10 @@ public class WarpiumItem extends ItemBlock {
 
     public WarpiumItem() {
         super(new Warpium());
-        this.setRegistryName(Warpium.NAME);
-        this.setUnlocalizedName(Warpium.NAME);
-        this.setMaxStackSize(64);
+        setRegistryName("hackcraft", Warpium.NAME);
+        setUnlocalizedName(Warpium.NAME);
+        setMaxStackSize(64);
     }
+
 
 }
