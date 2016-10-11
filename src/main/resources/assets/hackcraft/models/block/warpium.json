@@ -1,13 +1,7 @@
 {
-  "parent": "block/cube",
+  "parent": "block/cube_all",
   "textures": {
-    "particle": "hackcraft:blocks/warpium_side",
-    "down": "hackcraft:blocks/warpium_side",
-    "up": "hackcraft:blocks/warpium_side",
-    "north": "hackcraft:blocks/warpium_side",
-    "east": "hackcraft:blocks/warpium_side",
-    "south": "hackcraft:blocks/warpium_side",
-    "west": "hackcraft:blocks/warpium_side"
+    "all": "hackcraft:blocks/warpium"
   }
 }
 

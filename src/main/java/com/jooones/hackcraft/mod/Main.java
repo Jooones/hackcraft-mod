@@ -4,7 +4,11 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import com.jooones.hackcraft.mod.annotation.Initialize;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import java.io.IOException;
@@ -12,17 +16,33 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-@Mod(modid = "hackcraft", version = "0.1")
+@Mod(modid = Main.MOD_ID, version = Main.MOD_VERSION, name = Main.MOD_NAME)
 public class Main {
 
-    @Mod.EventHandler
+    public static final String MOD_ID = "hackcraft";
+    public static final String MOD_VERSION = "0.1";
+    public static final String MOD_NAME = "Hackcraft";
+
+    @Instance(MOD_ID)
+    public static Main instance;
+
+    @SidedProxy(clientSide = "com.jooones.hackcraft.mod.ClientProxy", serverSide = "com.jooones.hackcraft.mod.ServerProxy")
+    public static ServerProxy proxy;
+
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
         initialize();
+        proxy.preInit(event);
     }
 
-    @Mod.EventHandler
+    @EventHandler
     public void init(FMLInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
+        proxy.init(event);
+    }
 
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        proxy.postInit(event);
     }
 
     private void initialize() throws IOException, InvocationTargetException, IllegalAccessException {

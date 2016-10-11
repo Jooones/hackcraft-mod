@@ -1,5 +1,7 @@
 {
   "variants": {
-    "normal": { "model": "hackcraft:warpium" }
+    "normal" : {
+      "model": "hackcraft:warpium"
+    }
   }
 }
