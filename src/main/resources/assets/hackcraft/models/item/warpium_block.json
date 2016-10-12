@@ -1,5 +1,5 @@
 {
-  "parent": "hackcraft:block/warpium",
+  "parent": "hackcraft:block/warpium_block",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

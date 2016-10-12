@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "axis=z": { "model": "hackcraft:warpium_portal_ew" },
+        "axis=x": { "model": "hackcraft:warpium_portal_ns" }
+    }
+}

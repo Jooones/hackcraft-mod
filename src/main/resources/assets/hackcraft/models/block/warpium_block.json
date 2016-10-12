@@ -1,7 +1,7 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "hackcraft:blocks/warpium"
+    "all": "hackcraft:blocks/warpium_block"
   }
 }
 
