@@ -12,10 +12,10 @@ public class WarpiumBlock extends BaseBlock {
 
     @Initialize
     public static void init() {
-        register(new WarpiumBlock());
+        register(warpiumBlock());
     }
 
-    public WarpiumBlock() {
+    private WarpiumBlock() {
         super(Material.IRON, NAME);
         setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     }

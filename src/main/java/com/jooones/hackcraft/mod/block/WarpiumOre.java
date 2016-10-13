@@ -14,7 +14,7 @@ public class WarpiumOre extends BaseBlock {
         register(warpiumOre());
     }
 
-    public WarpiumOre() {
+    private WarpiumOre() {
         super(Material.ROCK, NAME);
         setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     }

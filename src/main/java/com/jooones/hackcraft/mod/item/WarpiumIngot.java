@@ -13,7 +13,7 @@ public class WarpiumIngot extends BaseItem {
         register(warpiumIngot());
     }
 
-    public WarpiumIngot() {
+    private WarpiumIngot() {
         super(NAME);
         setCreativeTab(CreativeTabs.MATERIALS);
         setMaxStackSize(64);
