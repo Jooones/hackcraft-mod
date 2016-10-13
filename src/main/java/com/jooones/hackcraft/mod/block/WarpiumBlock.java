@@ -8,6 +8,8 @@ public class WarpiumBlock extends BaseBlock {
 
     public static final String NAME = "warpium_block";
 
+    private static WarpiumBlock instance;
+
     @Initialize
     public static void init() {
         register(new WarpiumBlock());
@@ -17,5 +19,15 @@ public class WarpiumBlock extends BaseBlock {
         super(Material.IRON, NAME);
         setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
     }
+
+
+    public static WarpiumBlock warpiumBlock() {
+        if(instance == null) {
+            instance = new WarpiumBlock();
+        }
+
+        return instance;
+    }
+
 
 }
