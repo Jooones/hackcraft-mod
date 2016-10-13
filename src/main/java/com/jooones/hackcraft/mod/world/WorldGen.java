@@ -2,7 +2,6 @@ package com.jooones.hackcraft.mod.world;
 
 import com.jooones.hackcraft.mod.annotation.Initialize;
 import com.jooones.hackcraft.mod.block.WarpiumOre;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -31,8 +30,7 @@ public class WorldGen implements IWorldGenerator {
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator iChunkGenerator, IChunkProvider iChunkProvider) {
         switch (world.provider.getDimension()) {
             case 0: //Overworld
-                //generateOre(world, random, chunkX, chunkZ, 128, 35, 10, WarpiumOre.warpiumOre().getDefaultState());
-                runGenerator(warpiumOreGenerator, world, random, chunkX, chunkZ, 35, 0, 128);
+                oreGenerator(warpiumOreGenerator, world, random, chunkX, chunkZ, 35, 0, 128);
                 break;
             case -1: //Nether
                 break;
@@ -43,17 +41,7 @@ public class WorldGen implements IWorldGenerator {
         }
     }
 
-    private void generateOre(World world, Random rand, int chunkX, int chunkZ, int maxY, int chancesToSpawn, int veinSize, IBlockState blockState) {
-        for (int k = 0; k < chancesToSpawn; k++) {
-            int firstBlockXCoord = chunkX + rand.nextInt(16);
-            int firstBlockZCoord = chunkZ + rand.nextInt(16);
-            int y = rand.nextInt(maxY);
-            BlockPos blockPos = new BlockPos(firstBlockXCoord, y, firstBlockZCoord);
-            (new WorldGenMinable(blockState, veinSize)).generate(world, rand, blockPos);
-        }
-    }
-
-    private void runGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
+    private void oreGenerator(WorldGenerator generator, World world, Random rand, int chunk_X, int chunk_Z, int chancesToSpawn, int minHeight, int maxHeight) {
         if (minHeight < 0 || maxHeight > 256 || minHeight > maxHeight)
             throw new IllegalArgumentException("Illegal Height Arguments for WorldGenerator");
 
