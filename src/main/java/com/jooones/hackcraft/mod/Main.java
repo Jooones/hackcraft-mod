@@ -3,6 +3,7 @@ package com.jooones.hackcraft.mod;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import com.jooones.hackcraft.mod.annotation.Initialize;
+import com.jooones.hackcraft.mod.entity.WandiumProjectile;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,6 +34,9 @@ public class Main {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
         initialize();
+
+        EntityRegistry.registerModEntity(WandiumProjectile.class, "Wandium Projectile", 12345, instance, 64, 10, true);
+
         proxy.preInit(event);
     }
 
