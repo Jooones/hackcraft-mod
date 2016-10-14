@@ -18,6 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -104,14 +106,14 @@ public class WarpiumPortal extends BlockBreakable {
 
         if (blockportal$size.isValid() && blockportal$size.portalBlockCount == 0) {
             blockportal$size.placePortalBlocks();
-            spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
+            //spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
             return true;
         } else {
             WarpiumPortal.Size blockportal$size1 = new WarpiumPortal.Size(worldIn, pos, EnumFacing.Axis.Z);
 
             if (blockportal$size1.isValid() && blockportal$size1.portalBlockCount == 0) {
                 blockportal$size1.placePortalBlocks();
-                spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
+                //spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
                 return true;
             } else {
                 return false;
@@ -190,12 +192,12 @@ public class WarpiumPortal extends BlockBreakable {
      * Called When an Entity Collided with the Block
      */
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-        //System.out.println("x " + pos.getX() + " y " + pos.getY() + " z " + pos.getZ());
         Random random = new Random();
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss()) {
             if (entityIn instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entityIn;
-                if(canPlayerWarp(player)) {
+                if (canPlayerWarp(player)) {
+
                     int newX = pos.getX() + random.nextInt(200) - 100;
                     int newZ = pos.getZ() + random.nextInt(200) - 100;
                     BlockPos newBlockPos = new BlockPos(newX, pos.getY(), newZ);
@@ -208,47 +210,45 @@ public class WarpiumPortal extends BlockBreakable {
         }
     }
 
-    private boolean canPlayerWarp(EntityPlayer player){
-        if(cooldown.containsKey(player.getUniqueID()) && cooldown.get(player.getUniqueID()) > System.currentTimeMillis()){
+    private boolean canPlayerWarp(EntityPlayer player) {
+        if (cooldown.containsKey(player.getUniqueID()) && cooldown.get(player.getUniqueID()) > System.currentTimeMillis()) {
             return false;
         }
         cooldown.put(player.getUniqueID(), System.currentTimeMillis() + 2000);
         return true;
     }
 
-    private void generatePortal(World world, BlockPos pos, EnumFacing horizontalFacing){
+    private void generatePortal(World world, BlockPos pos, EnumFacing horizontalFacing) {
         BlockPos newBlockPos = pos;
-        while(world.isAirBlock(newBlockPos)){
+        while (world.isAirBlock(newBlockPos)) {
             newBlockPos = newBlockPos.down();
         }
         if (horizontalFacing.equals(EnumFacing.NORTH) || horizontalFacing.equals(EnumFacing.SOUTH)) {
-            if(horizontalFacing.equals(EnumFacing.NORTH)) {
+            if (horizontalFacing.equals(EnumFacing.NORTH)) {
                 newBlockPos = newBlockPos.south(2);
-            }else{
+            } else {
                 newBlockPos = newBlockPos.north(2);
             }
             for (int i = 0; i < 6; i++) {
                 newBlockPos = newBlockPos.up();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-            for(int i=0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                 newBlockPos = newBlockPos.east();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-            for(int i=0; i < 5; i++){
+            for (int i = 0; i < 5; i++) {
                 newBlockPos = newBlockPos.down();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-            for(int i=0; i < 3; i++){
+            for (int i = 0; i < 3; i++) {
                 newBlockPos = newBlockPos.west();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-        }
-        else{
-            if(horizontalFacing.equals(EnumFacing.EAST)){
+        } else {
+            if (horizontalFacing.equals(EnumFacing.EAST)) {
                 newBlockPos = newBlockPos.west(2);
-            }
-            else{
+            } else {
                 newBlockPos = newBlockPos.east(2);
             }
 
@@ -256,15 +256,15 @@ public class WarpiumPortal extends BlockBreakable {
                 newBlockPos = newBlockPos.up();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-            for(int i=0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                 newBlockPos = newBlockPos.north();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-            for(int i=0; i < 5; i++){
+            for (int i = 0; i < 5; i++) {
                 newBlockPos = newBlockPos.down();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
-            for(int i=0; i < 3; i++){
+            for (int i = 0; i < 3; i++) {
                 newBlockPos = newBlockPos.south();
                 world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
             }
