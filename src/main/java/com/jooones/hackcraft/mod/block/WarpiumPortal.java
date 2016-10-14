@@ -18,8 +18,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -106,14 +104,14 @@ public class WarpiumPortal extends BlockBreakable {
 
         if (blockportal$size.isValid() && blockportal$size.portalBlockCount == 0) {
             blockportal$size.placePortalBlocks();
-            //spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
+            spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
             return true;
         } else {
             WarpiumPortal.Size blockportal$size1 = new WarpiumPortal.Size(worldIn, pos, EnumFacing.Axis.Z);
 
             if (blockportal$size1.isValid() && blockportal$size1.portalBlockCount == 0) {
                 blockportal$size1.placePortalBlocks();
-                //spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
+                spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
                 return true;
             } else {
                 return false;
@@ -122,10 +120,20 @@ public class WarpiumPortal extends BlockBreakable {
     }
 
     private void spawnLightningNESWOfPortal(World worldIn, BlockPos pos) {
-        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX() - 5, pos.getY(), pos.getZ(), true));
-        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX() + 5, pos.getY(), pos.getZ(), true));
-        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() - 5, true));
-        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() + 5, true));
+        addBolt(worldIn, pos.getX() - 5, pos.getY(), pos.getZ());
+        addBolt(worldIn, pos.getX() + 5, pos.getY(), pos.getZ());
+        addBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() - 5);
+        addBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() + 5);
+    }
+
+    private void addBolt(World world, int x, int y, int z) {
+        EntityLightningBolt bolt1 = new EntityLightningBolt(world, x - 5, y, z, true);
+        if (world.checkNoEntityCollision(bolt1.getEntityBoundingBox(), bolt1)) {
+            world.addWeatherEffect(bolt1);
+        }
+        else{
+            System.out.println("collision avoided");
+        }
     }
 
     /**
