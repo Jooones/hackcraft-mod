@@ -10,18 +10,18 @@ import java.util.Random;
 
 import static com.jooones.hackcraft.mod.item.WarpiumNugget.warpiumNugget;
 
-public class EndermanDroppingWarpiumNugget {
+public class DropWarpiumNuggetOnEndermanDeath {
 
-    private static EndermanDroppingWarpiumNugget instance;
+    private static DropWarpiumNuggetOnEndermanDeath instance;
 
     @Initialize
     public static void init() {
         MinecraftForge.EVENT_BUS.register(endermanDroppingWarpiumNugget());
     }
 
-    public static EndermanDroppingWarpiumNugget endermanDroppingWarpiumNugget() {
+    public static DropWarpiumNuggetOnEndermanDeath endermanDroppingWarpiumNugget() {
         if (instance == null) {
-            instance = new EndermanDroppingWarpiumNugget();
+            instance = new DropWarpiumNuggetOnEndermanDeath();
         }
         return instance;
     }
