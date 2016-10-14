@@ -255,8 +255,10 @@ public class WarpiumPortal extends BlockBreakable {
                 d2 = (double)pos.getZ() + 0.5D + 0.25D * (double)j;
                 d5 = (double)(rand.nextFloat() * 2.0F * (float)j);
             }
-
-            worldIn.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5, new int[0]);
+            // TODO Jooones: decide which particle to use
+//            worldIn.spawnParticle(EnumParticleTypes.TOWN_AURA, d0, d1, d2, d3, d4, d5, new int[0]);
+//            worldIn.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, d0, d1, d2, d3, d4, d5, new int[0]);
+            worldIn.spawnParticle(EnumParticleTypes.REDSTONE, d0, d1, d2, d3, d4, d5, new int[0]);
         }
     }
 
