@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 public class WarpiumBlock extends BaseBlock {
 
     private static final String NAME = "warpium_block";
@@ -41,10 +43,14 @@ public class WarpiumBlock extends BaseBlock {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (heldItem != null && heldItem.getItem().equals(Wandium.wandium())) {
+        if (wandEquipped(heldItem)) {
             WarpiumPortal.warpiumPortal().trySpawnPortal(worldIn, calculatePositionToEvaluatePortal(pos, side));
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+    }
+
+    private Boolean wandEquipped(@Nullable ItemStack heldItem) {
+        return ofNullable(heldItem).map(item -> item.getItem().equals(Wandium.wandium())).orElse(false);
     }
 
     private BlockPos calculatePositionToEvaluatePortal(BlockPos pos, EnumFacing side) {
