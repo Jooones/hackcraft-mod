@@ -13,4 +13,5 @@ public class WarpiumIngotToWarpiumBlockRecipe {
     public static void init() {
         addRecipe(new ItemStack(warpiumBlock()), "II", "II", 'I', warpiumIngot());
     }
+
 }

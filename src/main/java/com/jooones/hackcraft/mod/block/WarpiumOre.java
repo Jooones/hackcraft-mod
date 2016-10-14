@@ -6,7 +6,8 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class WarpiumOre extends BaseBlock {
 
-    public static final String NAME = "warpium_ore";
+    private static final String NAME = "warpium_ore";
+
     private static WarpiumOre instance;
 
     @Initialize
@@ -20,10 +21,9 @@ public class WarpiumOre extends BaseBlock {
     }
 
     public static WarpiumOre warpiumOre() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new WarpiumOre();
         }
-
         return instance;
     }
 

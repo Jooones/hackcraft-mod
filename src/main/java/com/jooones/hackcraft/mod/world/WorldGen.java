@@ -17,7 +17,7 @@ public class WorldGen implements IWorldGenerator {
 
     private WorldGenerator warpiumOreGenerator;
 
-    public WorldGen() {
+    private WorldGen() {
         this.warpiumOreGenerator = new WorldGenMinable(WarpiumOre.warpiumOre().getDefaultState(), 8);
     }
 

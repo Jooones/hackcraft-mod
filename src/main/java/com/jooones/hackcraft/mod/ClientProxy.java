@@ -15,11 +15,9 @@ public class ClientProxy extends ServerProxy {
 
     @Override
     public void init(FMLInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
-
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event) {
-
     }
 }

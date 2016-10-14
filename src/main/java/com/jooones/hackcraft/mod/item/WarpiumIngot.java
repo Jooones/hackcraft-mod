@@ -4,7 +4,8 @@ import com.jooones.hackcraft.mod.annotation.Initialize;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class WarpiumIngot extends BaseItem {
-    public static final String NAME = "warpium_ingot";
+
+    private static final String NAME = "warpium_ingot";
 
     private static WarpiumIngot instance;
 
@@ -20,7 +21,7 @@ public class WarpiumIngot extends BaseItem {
     }
 
     public static WarpiumIngot warpiumIngot() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new WarpiumIngot();
         }
 

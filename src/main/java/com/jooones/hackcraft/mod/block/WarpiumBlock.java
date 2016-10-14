@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 
 public class WarpiumBlock extends BaseBlock {
 
-    public static final String NAME = "warpium_block";
+    private static final String NAME = "warpium_block";
 
     private static WarpiumBlock instance;
 
@@ -31,7 +31,7 @@ public class WarpiumBlock extends BaseBlock {
     }
 
     public static WarpiumBlock warpiumBlock() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new WarpiumBlock();
         }
         return instance;
@@ -71,7 +71,6 @@ public class WarpiumBlock extends BaseBlock {
         super.onBlockAdded(worldIn, pos, state);
         EntityLightningBolt entityLightningBolt = new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ(), true);
         worldIn.addWeatherEffect(entityLightningBolt);
-//        worldIn.spawnEntityInWorld(new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.APPLE)));
     }
 
 }

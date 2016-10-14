@@ -5,7 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class WarpiumNugget extends BaseItem {
 
-    public static final String NAME = "warpium_nugget";
+    private static final String NAME = "warpium_nugget";
 
     private static WarpiumNugget instance;
 
@@ -21,7 +21,7 @@ public class WarpiumNugget extends BaseItem {
     }
 
     public static WarpiumNugget warpiumNugget() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new WarpiumNugget();
         }
 

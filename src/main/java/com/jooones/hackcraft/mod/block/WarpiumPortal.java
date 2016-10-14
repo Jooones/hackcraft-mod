@@ -37,14 +37,12 @@ public class WarpiumPortal extends BlockBreakable {
     protected static final AxisAlignedBB Z_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D);
     protected static final AxisAlignedBB Y_AABB = new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D);
 
-    public static final String NAME = "warpium_portal";
+    private static final String NAME = "warpium_portal";
 
     private static WarpiumPortal instance;
 
     @Initialize
     public static void init() {
-//        BaseBlock.register(new WarpiumPortal());
-//        GameRegistry.register((new WarpiumPortal()).setHardness(-1.0F).setLightLevel(0.75F).setUnlocalizedName(NAME), new ResourceLocation(NAME));
         GameRegistry.register(warpiumPortal());
     }
 
@@ -54,11 +52,10 @@ public class WarpiumPortal extends BlockBreakable {
         setUnlocalizedName(NAME);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.X));
         this.setTickRandomly(true);
-//        this.setSoundType(SoundType.GLASS);
     }
 
     public static WarpiumPortal warpiumPortal() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new WarpiumPortal();
         }
         return instance;

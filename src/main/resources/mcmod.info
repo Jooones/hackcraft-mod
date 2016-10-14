@@ -1,8 +1,7 @@
-[
-{
+[{
   "modid": "hackcraft",
   "name": "Hackcraft",
-  "description": "TBD",
+  "description": "Warpium is all you need brah.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
@@ -12,5 +11,4 @@
   "logoFile": "assets/examplemod/textures/logo.png",
   "screenshots": [],
   "dependencies": []
-}
-]
+}]

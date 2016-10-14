@@ -10,6 +10,7 @@ import static net.minecraft.item.Item.getItemFromBlock;
 import static net.minecraftforge.client.model.ModelLoader.setCustomModelResourceLocation;
 
 abstract class BaseBlock extends Block {
+
     BaseBlock(Material materialIn, String name) {
         super(materialIn);
         setRegistryName(name);

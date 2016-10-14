@@ -8,8 +8,10 @@ import static com.jooones.hackcraft.mod.item.WarpiumIngot.warpiumIngot;
 import static net.minecraftforge.fml.common.registry.GameRegistry.addSmelting;
 
 public class WarpiumOreToWarpiumIngotRecipe {
+
     @Initialize
     public static void init() {
         addSmelting(warpiumOre(), new ItemStack(warpiumIngot()), 1);
     }
+
 }
