@@ -45,6 +45,10 @@ public class WarpiumBlock extends BaseBlock {
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (wandEquipped(heldItem)) {
             WarpiumPortal.warpiumPortal().trySpawnPortal(worldIn, calculatePositionToEvaluatePortal(pos, side));
+            worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX() - 5, pos.getY(), pos.getZ(), true));
+            worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX() + 5, pos.getY(), pos.getZ(), true));
+            worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() - 5, true));
+            worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() + 5, true));
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
@@ -74,13 +78,6 @@ public class WarpiumBlock extends BaseBlock {
             positionToEvaluatePortal = new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1);
         }
         return positionToEvaluatePortal;
-    }
-
-    @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
-        super.onBlockAdded(worldIn, pos, state);
-        EntityLightningBolt entityLightningBolt = new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ(), true);
-        worldIn.addWeatherEffect(entityLightningBolt);
     }
 
 }
