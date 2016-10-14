@@ -32,6 +32,7 @@ public class WarpiumBlock extends BaseBlock {
     private WarpiumBlock() {
         super(Material.IRON, NAME);
         setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
+        setHardness(50);
     }
 
     public static WarpiumBlock warpiumBlock() {
