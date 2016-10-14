@@ -30,12 +30,16 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.jooones.hackcraft.mod.block.WarpiumBlock.warpiumBlock;
+import static java.lang.Math.abs;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 public class WarpiumPortal extends BlockBreakable {
 
@@ -49,7 +53,7 @@ public class WarpiumPortal extends BlockBreakable {
 
     private static WarpiumPortal instance;
 
-    private Map<UUID, Long> cooldown = new HashMap<>();
+    private static Map<UUID, Long> cooldown = new ConcurrentHashMap<>();
 
     @Initialize
     public static void init() {
@@ -132,8 +136,7 @@ public class WarpiumPortal extends BlockBreakable {
         EntityLightningBolt bolt1 = new EntityLightningBolt(world, x - 5, y, z, true);
         if (world.checkNoEntityCollision(bolt1.getEntityBoundingBox(), bolt1)) {
             world.addWeatherEffect(bolt1);
-        }
-        else{
+        } else {
             System.out.println("collision avoided");
         }
     }
@@ -207,18 +210,29 @@ public class WarpiumPortal extends BlockBreakable {
             if (entityIn instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entityIn;
                 if (canPlayerWarp(player)) {
-
-                    int newX = pos.getX() + random.nextInt(200) - 100;
-                    int newZ = pos.getZ() + random.nextInt(200) - 100;
-                    BlockPos newBlockPos = new BlockPos(newX, pos.getY(), newZ);
-
-                    generatePortal(worldIn, newBlockPos, player.getHorizontalFacing());
-
-                    player.setPositionAndUpdate(newBlockPos.getX(), pos.getY(), newBlockPos.getZ());
-                    player.addPotionEffect(new PotionEffect(Potion.getPotionById(9), 100, 100));
+                    Optional<BlockPos> nearestPortalLocation = findNearestPortalLocation(worldIn, player, 25);
+                    nearestPortalLocation.ifPresent(portalPos -> warpPlayer(player, portalPos.getX() + 2, portalPos.getY(), portalPos.getZ() + 2));
+                    if (!nearestPortalLocation.isPresent()) {
+                        generatePortalAndTeleportPlayer(worldIn, pos, random, player);
+                    }
                 }
             }
         }
+    }
+
+    private void generatePortalAndTeleportPlayer(World worldIn, BlockPos pos, Random random, EntityPlayer player) {
+        int newX = pos.getX() + random.nextInt(200) - 100;
+        int newZ = pos.getZ() + random.nextInt(200) - 100;
+        BlockPos newBlockPos = new BlockPos(newX, pos.getY(), newZ);
+
+        generatePortal(worldIn, newBlockPos, player.getHorizontalFacing());
+
+        warpPlayer(player, newBlockPos.getX(), pos.getY(), newBlockPos.getZ());
+    }
+
+    private void warpPlayer(EntityPlayer player, int x, int y, int z) {
+        player.setPositionAndUpdate(x, y, z);
+        player.addPotionEffect(new PotionEffect(Potion.getPotionById(9), 100, 100));
     }
 
     private boolean canPlayerWarp(EntityPlayer player) {
@@ -282,6 +296,36 @@ public class WarpiumPortal extends BlockBreakable {
         }
 
         trySpawnPortal(world, newBlockPos.up(2));
+    }
+
+    private Optional<BlockPos> findNearestPortalLocation(World world, EntityPlayer player, int radius) {
+        int startX = player.getPosition().getX();
+        int startY = player.getPosition().getY();
+        int startZ = player.getPosition().getZ();
+
+        for (int y = startY - radius; y < (startY + radius); y++) {
+            for (int x = startX - radius; x < (startX + radius); x++) {
+                for (int z = startZ - radius; z < (startZ + radius); z++) {
+                    if (shouldCheckCoordinate(startX, x, startZ, z)) {
+                        BlockPos testPos = new BlockPos(x, y, z);
+                        Block block = world.getBlockState(testPos).getBlock();
+                        if (isWarpiumPortal(block)) {
+                            return of(testPos);
+                        }
+                    }
+                }
+            }
+        }
+
+        return empty();
+    }
+
+    private boolean shouldCheckCoordinate(int startingXCoordinate, int currentXCoordinate, int startingZCoordinate, int currentZCoordinate) {
+        return abs(startingXCoordinate - currentXCoordinate) > 5 || abs(startingZCoordinate - currentZCoordinate) > 5;
+    }
+
+    private boolean isWarpiumPortal(Block block) {
+        return getUnlocalizedName().equals(block.getUnlocalizedName());
     }
 
     @Nullable
