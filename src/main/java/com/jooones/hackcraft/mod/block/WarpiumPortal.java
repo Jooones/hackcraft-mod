@@ -13,6 +13,7 @@ import net.minecraft.block.state.BlockWorldState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -98,17 +99,26 @@ public class WarpiumPortal extends BlockBreakable {
 
         if (blockportal$size.isValid() && blockportal$size.portalBlockCount == 0) {
             blockportal$size.placePortalBlocks();
+            spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
             return true;
         } else {
             WarpiumPortal.Size blockportal$size1 = new WarpiumPortal.Size(worldIn, pos, EnumFacing.Axis.Z);
 
             if (blockportal$size1.isValid() && blockportal$size1.portalBlockCount == 0) {
                 blockportal$size1.placePortalBlocks();
+                spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
                 return true;
             } else {
                 return false;
             }
         }
+    }
+
+    private void spawnLightningNESWOfPortal(World worldIn, BlockPos pos) {
+        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX() - 5, pos.getY(), pos.getZ(), true));
+        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX() + 5, pos.getY(), pos.getZ(), true));
+        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() - 5, true));
+        worldIn.addWeatherEffect(new EntityLightningBolt(worldIn, pos.getX(), pos.getY(), pos.getZ() + 5, true));
     }
 
     /**
