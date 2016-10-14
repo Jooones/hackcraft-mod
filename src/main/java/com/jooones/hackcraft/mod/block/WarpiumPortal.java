@@ -4,6 +4,7 @@ import com.google.common.cache.LoadingCache;
 import com.jooones.hackcraft.mod.annotation.Initialize;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -52,6 +53,7 @@ public class WarpiumPortal extends BlockBreakable {
         setUnlocalizedName(NAME);
         this.setDefaultState(this.blockState.getBaseState().withProperty(AXIS, EnumFacing.Axis.X));
         this.setTickRandomly(true);
+        this.setSoundType(SoundType.SLIME);
     }
 
     public static WarpiumPortal warpiumPortal() {
