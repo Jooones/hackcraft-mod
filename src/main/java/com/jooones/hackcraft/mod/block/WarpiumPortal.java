@@ -179,15 +179,45 @@ public class WarpiumPortal extends BlockBreakable {
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss()) {
             if (entityIn instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entityIn;
-                int newX = pos.getX() + random.nextInt(100);
-                int newZ = pos.getZ() + random.nextInt(100);
+                int newX = pos.getX() + random.nextInt(200)-100;
+                int newZ = pos.getZ() + random.nextInt(200)-100;
                 BlockPos newBlockPos = new BlockPos(newX, pos.getY(), newZ);
 
                 //TODO generate new portal maybe???
+                generatePortal(worldIn, newBlockPos);
 
                 player.setPositionAndUpdate(newBlockPos.getX(), pos.getY(), newBlockPos.getZ());
             }
         }
+    }
+
+    private void generatePortal(World world, BlockPos pos){
+        BlockPos newBlockPos = pos.north(2);
+        while(world.isAirBlock(newBlockPos)){
+            newBlockPos = newBlockPos.down();
+        }
+        for (int i = 0; i < 6; i++) {
+            newBlockPos = newBlockPos.up();
+            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
+        }
+        for(int i=0; i < 4; i++){
+            newBlockPos = newBlockPos.east();
+            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
+        }
+        for(int i=0; i < 5; i++){
+            newBlockPos = newBlockPos.down();
+            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
+        }
+        for(int i=0; i < 3; i++){
+            newBlockPos = newBlockPos.west();
+            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
+        }
+
+        trySpawnPortal(world, newBlockPos.up(2));
     }
 
     @Nullable
@@ -324,11 +354,11 @@ public class WarpiumPortal extends BlockBreakable {
         private int height;
         private int width;
 
-        public Size(World worldIn, BlockPos p_i45694_2_, EnumFacing.Axis p_i45694_3_) {
+        public Size(World worldIn, BlockPos pos, EnumFacing.Axis axis) {
             this.world = worldIn;
-            this.axis = p_i45694_3_;
+            this.axis = axis;
 
-            if (p_i45694_3_ == EnumFacing.Axis.X) {
+            if (axis == EnumFacing.Axis.X) {
                 this.leftDir = EnumFacing.EAST;
                 this.rightDir = EnumFacing.WEST;
             } else {
@@ -336,14 +366,14 @@ public class WarpiumPortal extends BlockBreakable {
                 this.rightDir = EnumFacing.SOUTH;
             }
 
-            for (BlockPos blockpos = p_i45694_2_; p_i45694_2_.getY() > blockpos.getY() - 21 && p_i45694_2_.getY() > 0 && this.isEmptyBlock(worldIn.getBlockState(p_i45694_2_.down()).getBlock()); p_i45694_2_ = p_i45694_2_.down()) {
+            for (BlockPos blockpos = pos; pos.getY() > blockpos.getY() - 21 && pos.getY() > 0 && this.isEmptyBlock(worldIn.getBlockState(pos.down()).getBlock()); pos = pos.down()) {
                 ;
             }
 
-            int i = this.getDistanceUntilEdge(p_i45694_2_, this.leftDir) - 1;
+            int i = this.getDistanceUntilEdge(pos, this.leftDir) - 1;
 
             if (i >= 0) {
-                this.bottomLeft = p_i45694_2_.offset(this.leftDir, i);
+                this.bottomLeft = pos.offset(this.leftDir, i);
                 this.width = this.getDistanceUntilEdge(this.bottomLeft, this.rightDir);
 
                 if (this.width < 2 || this.width > 21) {
@@ -357,18 +387,18 @@ public class WarpiumPortal extends BlockBreakable {
             }
         }
 
-        protected int getDistanceUntilEdge(BlockPos p_180120_1_, EnumFacing p_180120_2_) {
+        protected int getDistanceUntilEdge(BlockPos pos, EnumFacing enumFacing) {
             int i;
 
             for (i = 0; i < 22; ++i) {
-                BlockPos blockpos = p_180120_1_.offset(p_180120_2_, i);
+                BlockPos blockpos = pos.offset(enumFacing, i);
 
                 if (!this.isEmptyBlock(this.world.getBlockState(blockpos).getBlock()) || this.world.getBlockState(blockpos.down()).getBlock() != warpiumBlock()) {
                     break;
                 }
             }
 
-            Block block = this.world.getBlockState(p_180120_1_.offset(p_180120_2_, i)).getBlock();
+            Block block = this.world.getBlockState(pos.offset(enumFacing, i)).getBlock();
             return block == warpiumBlock() ? i : 0;
         }
 
