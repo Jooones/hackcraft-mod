@@ -28,7 +28,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import static com.jooones.hackcraft.mod.block.WarpiumBlock.warpiumBlock;
 
@@ -43,6 +46,8 @@ public class WarpiumPortal extends BlockBreakable {
     private static final String NAME = "warpium_portal";
 
     private static WarpiumPortal instance;
+
+    private Map<UUID, Long> cooldown = new HashMap<>();
 
     @Initialize
     public static void init() {
@@ -185,46 +190,84 @@ public class WarpiumPortal extends BlockBreakable {
      * Called When an Entity Collided with the Block
      */
     public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+        //System.out.println("x " + pos.getX() + " y " + pos.getY() + " z " + pos.getZ());
         Random random = new Random();
         if (!entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn.isNonBoss()) {
             if (entityIn instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) entityIn;
-                int newX = pos.getX() + random.nextInt(200)-100;
-                int newZ = pos.getZ() + random.nextInt(200)-100;
-                BlockPos newBlockPos = new BlockPos(newX, pos.getY(), newZ);
+                if(canPlayerWarp(player)) {
+                    int newX = pos.getX() + random.nextInt(200) - 100;
+                    int newZ = pos.getZ() + random.nextInt(200) - 100;
+                    BlockPos newBlockPos = new BlockPos(newX, pos.getY(), newZ);
 
-                //TODO generate new portal maybe???
-                generatePortal(worldIn, newBlockPos);
+                    generatePortal(worldIn, newBlockPos, player.getHorizontalFacing());
 
-                player.setPositionAndUpdate(newBlockPos.getX(), pos.getY(), newBlockPos.getZ());
+                    player.setPositionAndUpdate(newBlockPos.getX(), pos.getY(), newBlockPos.getZ());
+                }
             }
         }
     }
 
-    private void generatePortal(World world, BlockPos pos){
-        BlockPos newBlockPos = pos.north(2);
+    private boolean canPlayerWarp(EntityPlayer player){
+        if(cooldown.containsKey(player.getUniqueID()) && cooldown.get(player.getUniqueID()) > System.currentTimeMillis()){
+            return false;
+        }
+        cooldown.put(player.getUniqueID(), System.currentTimeMillis() + 2000);
+        return true;
+    }
+
+    private void generatePortal(World world, BlockPos pos, EnumFacing horizontalFacing){
+        BlockPos newBlockPos = pos;
         while(world.isAirBlock(newBlockPos)){
             newBlockPos = newBlockPos.down();
         }
-        for (int i = 0; i < 6; i++) {
-            newBlockPos = newBlockPos.up();
-            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
-            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
+        if (horizontalFacing.equals(EnumFacing.NORTH) || horizontalFacing.equals(EnumFacing.SOUTH)) {
+            if(horizontalFacing.equals(EnumFacing.NORTH)) {
+                newBlockPos = newBlockPos.south(2);
+            }else{
+                newBlockPos = newBlockPos.north(2);
+            }
+            for (int i = 0; i < 6; i++) {
+                newBlockPos = newBlockPos.up();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
+            for(int i=0; i < 4; i++){
+                newBlockPos = newBlockPos.east();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
+            for(int i=0; i < 5; i++){
+                newBlockPos = newBlockPos.down();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
+            for(int i=0; i < 3; i++){
+                newBlockPos = newBlockPos.west();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
         }
-        for(int i=0; i < 4; i++){
-            newBlockPos = newBlockPos.east();
-            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
-            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
-        }
-        for(int i=0; i < 5; i++){
-            newBlockPos = newBlockPos.down();
-            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
-            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
-        }
-        for(int i=0; i < 3; i++){
-            newBlockPos = newBlockPos.west();
-            world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
-            world.notifyBlockOfStateChange(newBlockPos, WarpiumBlock.warpiumBlock());
+        else{
+            if(horizontalFacing.equals(EnumFacing.EAST)){
+                newBlockPos = newBlockPos.west(2);
+            }
+            else{
+                newBlockPos = newBlockPos.east(2);
+            }
+
+            for (int i = 0; i < 6; i++) {
+                newBlockPos = newBlockPos.up();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
+            for(int i=0; i < 4; i++){
+                newBlockPos = newBlockPos.north();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
+            for(int i=0; i < 5; i++){
+                newBlockPos = newBlockPos.down();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
+            for(int i=0; i < 3; i++){
+                newBlockPos = newBlockPos.south();
+                world.setBlockState(newBlockPos, WarpiumBlock.warpiumBlock().getDefaultState());
+            }
         }
 
         trySpawnPortal(world, newBlockPos.up(2));
