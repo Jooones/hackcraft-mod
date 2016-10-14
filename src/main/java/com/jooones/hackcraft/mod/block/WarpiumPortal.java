@@ -104,14 +104,14 @@ public class WarpiumPortal extends BlockBreakable {
 
         if (blockportal$size.isValid() && blockportal$size.portalBlockCount == 0) {
             blockportal$size.placePortalBlocks();
-            spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
+            //spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
             return true;
         } else {
             WarpiumPortal.Size blockportal$size1 = new WarpiumPortal.Size(worldIn, pos, EnumFacing.Axis.Z);
 
             if (blockportal$size1.isValid() && blockportal$size1.portalBlockCount == 0) {
                 blockportal$size1.placePortalBlocks();
-                spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
+                //spawnLightningNESWOfPortal(worldIn, new BlockPos(pos.getX(), blockportal$size.bottomLeft.getY() - 1, pos.getZ()));
                 return true;
             } else {
                 return false;
