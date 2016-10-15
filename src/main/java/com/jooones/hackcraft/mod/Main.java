@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.reflect.ClassPath;
 import com.jooones.hackcraft.mod.annotation.Initialize;
 import com.jooones.hackcraft.mod.entity.WandiumProjectile;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -17,6 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
+import static com.jooones.hackcraft.mod.item.WarpiumNugget.warpiumNugget;
 
 @Mod(modid = Main.MOD_ID, version = Main.MOD_VERSION, name = Main.MOD_NAME)
 public class Main {
@@ -42,6 +47,7 @@ public class Main {
 
     @EventHandler
     public void init(FMLInitializationEvent event) throws IllegalAccessException, IOException, InvocationTargetException {
+        RenderingRegistry.registerEntityRenderingHandler(WandiumProjectile.class, new RenderSnowball<WandiumProjectile>(Minecraft.getMinecraft().getRenderManager(), warpiumNugget(), Minecraft.getMinecraft().getRenderItem()));
         proxy.init(event);
     }
 

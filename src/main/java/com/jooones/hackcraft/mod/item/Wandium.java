@@ -1,9 +1,9 @@
 package com.jooones.hackcraft.mod.item;
 
 import com.jooones.hackcraft.mod.annotation.Initialize;
+import com.jooones.hackcraft.mod.entity.WandiumProjectile;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -37,8 +37,8 @@ public class Wandium extends BaseItem {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        //fireProjectile(new WandiumProjectile(worldIn, playerIn), worldIn, playerIn);
-        fireProjectile(new EntitySnowball(worldIn, playerIn), worldIn, playerIn);
+        fireProjectile(new WandiumProjectile(worldIn, playerIn), worldIn, playerIn);
+        //fireProjectile(new EntitySnowball(worldIn, playerIn), worldIn, playerIn);
 
         return super.onItemRightClick(itemStackIn, worldIn, playerIn, hand);
     }
